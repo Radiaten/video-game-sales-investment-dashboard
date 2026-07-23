@@ -23,8 +23,8 @@ Tableau Desktop, R
 
 ## Files
 - `Data Analysis/Dataset_Clean.Rmd` - R File which contains code for cleaning the dataset
-- `Report/Report.pdf` — full design rationale and walkthrough
-- `Dashboard/Dashboard.twbx` — Tableau workbook
+- `Report/Report.pdf` - full design rationale and walkthrough
+- `Dashboard/Dashboard.twbx` - Tableau workbook
 - `Images` - Screenshots of all the individual dashboard images
 
 ## Data Source
