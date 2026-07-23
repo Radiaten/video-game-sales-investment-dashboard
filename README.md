@@ -12,7 +12,7 @@ Design decisions were grounded in visualisation theory rather than Tableau's def
 - Sales peaked 2007-2009 (Wii/DS boom); post-2010 decline likely reflects a shift to digital distribution, not market contraction.
 - Publisher-console dominance differs by region. The top performers in North America aren't the same as in Japan or Europe.
 
-## Interactivity
+## Core-Interactivity
 A Dashboard Filter Action connects the genre sales chart to a publisher-console heatmap; a region parameter lets the analyst switch between NA/JP/PAL views live.
 
 ## Dashboard
