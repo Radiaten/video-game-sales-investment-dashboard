@@ -22,9 +22,10 @@ A Dashboard Filter Action connects the genre sales chart to a publisher-console 
 Tableau Desktop, R
 
 ## Files
-- `report/project_report.pdf` — full design rationale and walkthrough
-- `dashboard/Dashboard.twbx` — Tableau workbook
-- `data/` - https://www.kaggle.com/datasets/bhushandivekar/video-game-sales-and-industry-data-1980-2024
+- `Data Analysis/Dataset_Clean.Rmd` - R File which contains code for cleaning the dataset
+- `Report/Report.pdf` — full design rationale and walkthrough
+- `Dashboard/Dashboard.twbx` — Tableau workbook
+- `Images` - Screenshots of all the individual dashboard images
 
 ## Data Source
 [Video Game Sales & Industry Data, 1980–2024 (Kaggle)](https://www.kaggle.com/datasets/bhushandivekar/video-game-sales-and-industry-data-1980-2024)
