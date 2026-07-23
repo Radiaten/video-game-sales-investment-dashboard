@@ -1,0 +1,199 @@
+```{r}
+library(dplyr)
+library(lubridate)
+library(stringr)
+```
+
+```{r}
+data <- read.csv("../Data/Video Games Sales (1980-2024) - Raw.csv", stringsAsFactors = FALSE)
+
+str(data)
+summary(data)
+```
+
+```{r}
+clean_data <- data
+```
+
+```{r}
+clean_data <- clean_data %>%
+  distinct(title, console, release_date, .keep_all = TRUE)
+```
+
+```{r}
+sum(duplicated(clean_data))
+```
+
+```{r}
+clean_data <- clean_data %>%
+  mutate(
+    title = trimws(title),
+    console = trimws(console),
+    genre = trimws(genre),
+    publisher = trimws(publisher),
+    developer = trimws(developer),
+    release_date = trimws(release_date)
+  )
+```
+
+```{r}
+clean_data <- clean_data %>%
+  mutate(
+    year = as.numeric(substr(release_date, nchar(release_date)-3, nchar(release_date)))
+  )
+```
+
+```{r}
+summary(clean_data$year)
+sum(is.na(clean_data$year))
+```
+
+```{r}
+# Rows where release_date cannot be parsed
+problem_dates <- clean_data %>%
+  filter(is.na(dmy(release_date)) & is.na(mdy(release_date)) & is.na(ymd(release_date))) %>%
+  select(title, console, release_date)
+
+head(problem_dates, 20)
+```
+
+```{r}
+# Clean whitespace first
+data <- data %>% 
+  mutate(release_date_clean = str_trim(release_date))
+
+# Try parsing all formats
+data <- data %>%
+  mutate(
+    release_date2 = dmy(release_date_clean),
+    release_date2 = if_else(is.na(release_date2), mdy(release_date_clean), release_date2),
+    release_date2 = if_else(is.na(release_date2), ymd(release_date_clean), release_date2),
+    year = year(release_date2)
+  )
+
+# Identify problematic rows
+problem_dates <- data %>% filter(is.na(release_date2)) %>% select(title, console, release_date_clean)
+nrow(problem_dates)
+head(problem_dates, 20)
+```
+
+```{r}
+data <- data %>%
+  filter(is.na(year) | (year >= 1970 & year <= 2024))
+```
+
+```{r}
+sapply(data, function(x) sum(is.na(x)))
+```
+
+```{r}
+problem_dates <- data %>% filter(is.na(release_date2)) %>% select(title, console, release_date)
+
+```
+```{r}
+data <- data %>% mutate(diff = total_sales - (na_sales + jp_sales + pal_sales + other_sales))
+summary(data$diff)
+```
+
+```{r}
+str(data)
+
+
+colSums(is.na(data))
+
+```
+
+```{r}
+data %>% filter(is.na(year))
+```
+
+```{r}
+clean_data <- data %>%
+  filter(!is.na(release_date2) & release_date2 != "")
+
+# Check remaining rows
+nrow(clean_data)
+```
+
+```{r}
+clean_data <- clean_data %>%
+  mutate(year = as.numeric(format(release_date2, "%Y")))
+```
+
+```{r}
+clean_data <- clean_data %>% distinct()
+```
+
+```{r}
+# Check structure
+str(data)
+
+# Summary statistics
+summary(data)
+```
+
+```{r}
+sapply(data, function(x) sum(is.na(x)))
+```
+
+```{r}
+# Check duplicates
+sum(duplicated(data))
+
+# Remove duplicates
+data <- data %>% distinct()
+```
+
+```{r}
+sum(duplicated(data))
+
+```
+
+```{r}
+  data$release_date_clean <- str_trim(data$release_date)
+
+# Parse date: try multiple formats
+data <- data %>%
+  mutate(
+    release_date2 = dmy(release_date_clean),
+    release_date2 = if_else(is.na(release_date2), mdy(release_date_clean), release_date2),
+    release_date2 = if_else(is.na(release_date2), ymd(release_date_clean), release_date2),
+    year = year(release_date2)
+  )
+
+# Filter out rows with invalid dates
+data <- data %>% filter(!is.na(release_date2))
+```
+
+```{r}
+data <- data %>%
+  mutate(Check_Total = na_sales + jp_sales + pal_sales + other_sales,
+         Difference = total_sales - Check_Total,
+         Total_Sales_Rounded = round(total_sales, 2))
+
+summary(data$Difference)
+```
+```{r}
+sapply(data, function(x) sum(is.na(x)))
+```
+
+```{r}
+nrow(data)
+```
+```{r}
+write.csv(data, "video_game_sales_cleaned.csv", row.names = FALSE)
+```
+
+```{r}
+# Read the CSV back
+check_data <- read.csv("video_game_sales_cleaned.csv")
+
+# Quick checks
+str(check_data)          # Check structure and data types
+summary(check_data)      # Check ranges, NAs, and summary statistics
+anyDuplicated(check_data) # Ensure no duplicates
+```
+
+
+
+
